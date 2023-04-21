@@ -1,0 +1,17 @@
+name: Run
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  run_bundled:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: '24'
+          elixir-version: '1.12'
+      - run: elixir test.exs
