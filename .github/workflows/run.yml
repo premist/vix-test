@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  run_bundled:
+  linux_bundled_vips:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,3 +15,35 @@ jobs:
           otp-version: '24'
           elixir-version: '1.12'
       - run: elixir test.exs
+
+  linux_system_vips:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: '24'
+          elixir-version: '1.12'
+      - run: sudo apt update && sudo apt install libvips libvips-dev -y
+      - run: VIX_COMPILATION_MODE=PLATFORM_PROVIDED_LIBVIPS elixir test.exs
+
+  macos_bundled_vips:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          brew install erlang@24 elixir
+          mix local.hex --force
+      - run: elixir test.exs
+
+  macos_system_vips:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          brew install erlang@24 elixir libvips
+          mix local.hex --force
+      - run: VIX_COMPILATION_MODE=PLATFORM_PROVIDED_LIBVIPS elixir test.exs
