@@ -1,5 +1,5 @@
 Mix.install([
-  {:vix, "~> 0.18.0"}
+  {:vix, github: "akash-akya/vix", branch: "dev"}
 ])
 
 IO.puts "Loading image"
